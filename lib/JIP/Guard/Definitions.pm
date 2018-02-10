@@ -24,8 +24,6 @@ sub CONSTRAINTS {
 sub new {
     my ($class, %param) = @ARG;
 
-#to_debug(param => \%param);
-
     my $stash = {};
     foreach my $each_constraint (@{ $class->CONSTRAINTS }) {
         my $constraint_value = $param{$each_constraint};
@@ -39,8 +37,6 @@ sub new {
             constraint_value => $constraint_value,
         );
     }
-
-to_debug(stash => $stash);
 
     return bless({}, $class)->_set_stash($stash);
 }

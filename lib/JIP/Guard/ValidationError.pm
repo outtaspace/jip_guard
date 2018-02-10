@@ -9,11 +9,7 @@ use English qw(-no_match_vars);
 
 our $VERSION = '0.01';
 
-has [qw(
-    schema
-    definition
-    document
-)] => (get => q{+}, set => q{-});
+has [qw(schema definition document)] => (get => q{+}, set => q{-});
 
 sub new {
     my ($class, %param) = @ARG;

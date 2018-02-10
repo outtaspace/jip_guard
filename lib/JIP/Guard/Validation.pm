@@ -11,7 +11,6 @@ use JIP::Guard::ValidationError;
 
 our $VERSION = '0.01';
 
-
 has [qw(document schema registry error_handler)] => (get => q{+}, set => q{-});
 
 sub new {

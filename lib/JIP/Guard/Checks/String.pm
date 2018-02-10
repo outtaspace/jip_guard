@@ -28,8 +28,6 @@ sub check_for_string {
 sub check_for_in {
     my ($self, $definition) = @ARG;
 
-to_debug_count();
-
     my $document = $self->document;
 
     my $expected = 1;

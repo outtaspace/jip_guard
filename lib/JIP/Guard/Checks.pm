@@ -5,8 +5,6 @@ use warnings;
 
 use JIP::ClassField;
 use Carp qw(croak);
-use List::MoreUtils qw(any);
-use Scalar::Util qw(reftype);
 use English qw(-no_match_vars);
 
 use constant NEED_TO_CONTINUE    => 1;

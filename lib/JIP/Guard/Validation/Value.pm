@@ -5,8 +5,6 @@ use parent 'JIP::Guard::Validation';
 use strict;
 use warnings;
 
-use List::MoreUtils qw(any);
-use Scalar::Util qw(reftype);
 use English qw(-no_match_vars);
 
 use JIP::Guard::Factory::Checks;
