@@ -9,7 +9,7 @@ my %write_makefile_param = (
     ABSTRACT_FROM    => 'lib/JIP/Guard.pm',
     LICENSE          => 'artistic_2',
     PL_FILES         => {},
-    MIN_PERL_VERSION => 5.10,
+    MIN_PERL_VERSION => 5.10.0,
     META_MERGE       => {
         'meta-spec'    => {version => 2},
         resources      => {
