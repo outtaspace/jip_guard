@@ -12,7 +12,7 @@ perl:
 env:
   global:
     - PERL_CPANM_OPT="--notest --force --skip-satisfied"
-    - TEST_NOTABS
+    - TEST_NOTABS=1
 before_install:
     - "cpanm lib::abs"
     - "cpanm Test::Exception"
