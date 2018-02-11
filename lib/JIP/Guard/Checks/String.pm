@@ -8,6 +8,8 @@ use warnings;
 use Scalar::Util qw(reftype);
 use English qw(-no_match_vars);
 
+our $VERSION = '0.01';
+
 sub check_for_string {
     my ($self, $definition) = @ARG;
 

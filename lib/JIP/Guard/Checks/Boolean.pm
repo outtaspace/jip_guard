@@ -7,6 +7,8 @@ use warnings;
 
 use English qw(-no_match_vars);
 
+our $VERSION = '0.01';
+
 sub check_for_boolean {
     my ($self, $definition) = @ARG;
 
