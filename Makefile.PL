@@ -30,6 +30,7 @@ my %write_makefile_param = (
         'English'         => 0,
         'Test::More'      => 0,
         'Test::Exception' => 0,
+        'Test::NoTabs'    => 0,
         'lib::abs'        => 0,
         'Mock::Quick'     => 0,
     },
