@@ -6,6 +6,7 @@ use strict;
 use warnings FATAL => 'all';
 
 use Test::More;
+use Test::Exception;
 use English qw(-no_match_vars);
 
 use constant PERLISH_TRUE  => !!1;
@@ -30,9 +31,9 @@ subtest 'Require some module' => sub {
 subtest 'new()' => sub {
     plan tests => 11;
 
-    eval { JIP::Guard->new; } or do {
-        like $EVAL_ERROR, qr{Mandatory \s argument \s "registry" \s is \s missing}x;
-    };
+    throws_ok { JIP::Guard->new; } qr{
+        Mandatory \s argument \s "registry" \s is \s missing
+    }x;
 
     my $o = JIP::Guard->new(registry => 'tratata registry');
     ok $o, 'got instance of JIP::Guard';
