@@ -58,16 +58,5 @@ sub build_check_sequence {
     return @checks;
 }
 
-sub get_constraint_value {
-    my ($self, $constraint) = @ARG;
-
-    my $stash = $self->_stash;
-
-    croak(sprintf q{Definition "%s" is not exists}, $constraint)
-        unless exists $stash->{$constraint};
-
-    return $stash->{$constraint};
-}
-
 1;
 
