@@ -6,9 +6,10 @@ use strict;
 use warnings FATAL => 'all';
 
 use Test::More;
+use Test::Exception;
 use English qw(-no_match_vars);
 
-plan tests => 1;
+plan tests => 2;
 
 subtest 'Require some module' => sub {
     plan tests => 2;
@@ -22,5 +23,53 @@ subtest 'Require some module' => sub {
             $PERL_VERSION,
             $EXECUTABLE_NAME,
     );
+};
+
+subtest 'new()' => sub {
+    plan tests => 9;
+
+    throws_ok {
+        JIP::Guard::ValidationError->new(
+            definition => 'is present',
+            document   => 'is present',
+        );
+    }
+    qr{Mandatory \s argument \s "schema" \s is \s missing}x;
+
+    throws_ok {
+        JIP::Guard::ValidationError->new(
+            schema   => 'is present',
+            document => 'is present',
+        );
+    }
+    qr{Mandatory \s argument \s "definition" \s is \s missing}x;
+
+    throws_ok {
+        JIP::Guard::ValidationError->new(
+            schema     => 'is present',
+            definition => 'is present',
+        );
+    }
+    qr{Mandatory \s argument \s "document" \s is \s missing}x;
+
+    my $o = JIP::Guard::ValidationError->new(
+            schema     => 'schema',
+            definition => 'definition',
+            document   => 'document',
+    );
+    ok $o, 'got instance of JIP::Guard::ValidationError';
+
+    isa_ok $o, 'JIP::Guard::ValidationError';
+
+    can_ok $o, qw(
+        new
+        schema
+        definition
+        document
+    );
+
+    is $o->schema,     'schema';
+    is $o->definition, 'definition';
+    is $o->document,   'document';
 };
 
