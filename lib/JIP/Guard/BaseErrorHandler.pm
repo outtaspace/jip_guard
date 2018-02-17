@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use JIP::ClassField;
+use Carp qw(croak);
 use English qw(-no_match_vars);
 
 our $VERSION = '0.01';
@@ -30,9 +31,7 @@ sub add {
 }
 
 sub extend {
-    my ($self, @errors) = @ARG;
-
-    return $self;
+    croak q{Method "extend" not implemented};
 }
 
 sub start {
