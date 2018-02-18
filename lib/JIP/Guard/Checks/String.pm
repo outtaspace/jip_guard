@@ -16,7 +16,7 @@ sub check_for_string {
     my $document = $self->document;
 
     my $expected = $definition->constraint_value;
-    my $got      = reftype($document) // 'string' ? 1 : 0;
+    my $got      = defined reftype($document) ? 0 : 1;
 
     if ($got ne $expected) {
         $self->record_error(definition => $definition);
