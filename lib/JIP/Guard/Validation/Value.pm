@@ -24,15 +24,11 @@ sub validate {
 sub _check {
     my $self = shift;
 
-
     my $definitions = $self->registry->get($self->schema); # entry point
 
-    my $checks = JIP::Guard::Factory::Checks->create_for_definitions_instance(
-        definitions => $definitions,
-        validation  => $self,
-    );
+    my $checks = $self->_create_checks_for($definitions);
 
-    for my $each_definition ($definitions->build_check_sequence) {
+    for my $each_definition (@{ $definitions->build_check_sequence }) {
         my $need_to_continue = do {
             my $method = $each_definition->method;
 
@@ -41,6 +37,17 @@ sub _check {
 
         last unless $need_to_continue;
     }
+
+    return $self;
+}
+
+sub _create_checks_for {
+    my ($self, $definitions) = @ARG;
+
+    return JIP::Guard::Factory::Checks->create_for_definitions_instance(
+        definitions => $definitions,
+        validation  => $self,
+    );
 }
 
 1;
