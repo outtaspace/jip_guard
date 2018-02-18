@@ -8,7 +8,7 @@ use warnings FATAL => 'all';
 use Test::More;
 use Test::Exception;
 use English qw(-no_match_vars);
-use Mock::Quick qw(qtakeover qobj qmeth);
+use Mock::Quick qw(qobj qmeth);
 
 plan tests => 5;
 
