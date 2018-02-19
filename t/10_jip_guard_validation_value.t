@@ -101,13 +101,19 @@ subtest 'validate()' => sub {
 
     my $control = qtakeover 'JIP::Guard::Validation::Value' => (
         _set_up => qmeth {
+            my $self = shift;
             push @{ $sequence }, '_set_up';
+            return $self;
         },
         _check => qmeth {
+            my $self = shift;
             push @{ $sequence }, '_check';
+            return $self;
         },
         _tear_down => qmeth {
+            my $self = shift;
             push @{ $sequence }, '_tear_down';
+            return $self;
         },
     );
 
