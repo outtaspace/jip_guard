@@ -29,8 +29,8 @@ subtest 'Require some module' => sub {
 subtest 'abstract methods' => sub {
     plan tests => 2;
 
-    throws_ok { JIP::Guard::Validation->_real_check; } qr{
-        Method \s "_real_check" \s not \s implemented
+    throws_ok { JIP::Guard::Validation->_check; } qr{
+        Method \s "_check" \s not \s implemented
     }x;
 
     throws_ok { JIP::Guard::Validation->validate; } qr{
@@ -94,7 +94,7 @@ subtest 'new()' => sub {
         registry
         error_handler
         _set_up
-        _real_check
+        _check
         _tear_down
     );
 

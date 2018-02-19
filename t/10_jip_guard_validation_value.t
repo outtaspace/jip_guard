@@ -84,7 +84,7 @@ subtest 'new()' => sub {
         error_handler
         _create_checks_for
         _set_up
-        _real_check
+        _check
         _tear_down
     );
 

@@ -58,8 +58,8 @@ sub _set_up {
     return $self;
 }
 
-sub _real_check {
-    croak q{Method "_real_check" not implemented};
+sub _check {
+    croak q{Method "_check" not implemented};
 }
 
 sub _tear_down {
