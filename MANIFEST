@@ -29,6 +29,7 @@ t/11_jip_guard_validation_ref.t
 t/12_jip_guard_validationerror.t
 t/13_jip_guard_validation.t
 t/14_jip_guard_definitions.t
+t/15_jip_guard_factory_validation.t
 t/99_notabs.t
 Makefile.PL
 Changes

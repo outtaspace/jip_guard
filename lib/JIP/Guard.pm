@@ -8,8 +8,6 @@ use Carp qw(croak);
 use English qw(-no_match_vars);
 
 use JIP::Guard::BaseErrorHandler;
-use JIP::Guard::Validation::Value;
-use JIP::Guard::Validation::Ref;
 
 our $VERSION = '0.01';
 
@@ -54,34 +52,13 @@ sub new {
 sub validate {
     my ($self, %param) = @ARG;
 
-    # TODO move to factory JIP::Guard::Factory::Validation
-    croak q{Mandatory argument "schema" is missing}
-        unless exists $param{'schema'};
-
     $self->_clear_errors;
 
-    # TODO move to factory JIP::Guard::Factory::Validation
-    my %validation_param = (
+    my $validation = JIP::Guard::Factory::Validation->create_for_request(
+        %param,
         registry      => $self->registry,
         error_handler => $self->error_handler,
-        schema        => $param{'schema'},
     );
-
-    # TODO move to factory JIP::Guard::Factory::Validation
-    my $validation = do {
-        my $class;
-
-        if (exists $param{'value'}) {
-            $class                        = 'JIP::Guard::Validation::Value';
-            $validation_param{'document'} = $param{'value'};
-        }
-        elsif (exists $param{'ref'}) {
-            $class                        = 'JIP::Guard::Validation::Ref';
-            $validation_param{'document'} = $param{'ref'};
-        }
-
-        $class->new(%validation_param);
-    };
 
     $validation->validate;
 
