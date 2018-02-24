@@ -165,7 +165,7 @@ subtest '_check()' => sub {
         build_check_sequence => qmeth {
             pass 'build_check_sequence method is invoked';
 
-            return [
+            return (
                 qobj(
                     constraint       => qmeth { return 'foo'; },
                     constraint_value => qmeth { return undef; },
@@ -181,7 +181,7 @@ subtest '_check()' => sub {
                     constraint_value => qmeth { return undef; },
                     method           => qmeth { return 'check_for_bar'; },
                 ),
-            ];
+            );
         },
     );
 

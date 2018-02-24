@@ -8,6 +8,7 @@ use Carp qw(croak);
 use English qw(-no_match_vars);
 
 use JIP::Guard::BaseErrorHandler;
+use JIP::Guard::Factory::Validation;
 
 our $VERSION = '0.01';
 

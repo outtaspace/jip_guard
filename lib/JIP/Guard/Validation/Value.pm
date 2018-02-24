@@ -24,7 +24,7 @@ sub _check {
 
     my $checks = $self->_create_checks_for($definitions);
 
-    for my $each_definition (@{ $definitions->build_check_sequence }) {
+    for my $each_definition ($definitions->build_check_sequence) {
         my $need_to_continue = do {
             my $method = $each_definition->method;
 
