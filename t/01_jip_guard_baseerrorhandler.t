@@ -7,6 +7,7 @@ use warnings FATAL => 'all';
 
 use Test::More;
 use Test::Exception;
+use Scalar::Util qw(refaddr);
 use English qw(-no_match_vars);
 
 plan tests => 6;
@@ -25,14 +26,6 @@ subtest 'Require some module' => sub {
     );
 };
 
-subtest 'abstract methods' => sub {
-    plan tests => 1;
-
-    throws_ok { JIP::Guard::BaseErrorHandler->extend; } qr{
-        Method \s "extend" \s not \s implemented
-    }x;
-};
-
 subtest 'new()' => sub {
     plan tests => 4;
 
@@ -41,22 +34,30 @@ subtest 'new()' => sub {
 
     isa_ok $o, 'JIP::Guard::BaseErrorHandler';
 
-    can_ok $o, qw(new errors add extend start end);
+    can_ok $o, qw(new errors has_error add start end);
 
     is_deeply $o->errors, [];
 };
 
 subtest 'start()' => sub {
-    plan tests => 3;
+    plan tests => 5;
 
     my $o = JIP::Guard::BaseErrorHandler->new;
 
     cmp_ok $o->_active, q{==}, 0;
 
+    my $oldErrorsAddr = refaddr $o->errors;
+
     $o = $o->start;
+
     isa_ok $o, 'JIP::Guard::BaseErrorHandler';
 
     cmp_ok $o->_active, q{==}, 1;
+
+    my $newErrorsAddr = refaddr $o->errors;
+
+    isnt $newErrorsAddr, $oldErrorsAddr;
+    is_deeply $o->errors, [];
 };
 
 subtest 'end()' => sub {
@@ -85,23 +86,35 @@ subtest 'add()' => sub {
     };
 
     subtest 'active' => sub {
-        plan tests => 1;
+        plan tests => 3;
 
         my $o = JIP::Guard::BaseErrorHandler->new;
 
+        $o->add(1)->add(1);
+
+        is_deeply $o->errors, [];
+
+        $o->start->add(2)->add(2)->end;
+
+        $o->add(3)->add(3);
+
+        is_deeply $o->errors, [2, 2];
+
         $o->start;
-        $o->add('first error');
 
-        $o->end;
-        $o->add('second error');
-
-        $o->start;
-        $o->add('third error');
-
-        $o->end;
-        $o->add('fourth error');
-
-        is_deeply $o->errors, ['first error', 'third error'];
+        is_deeply $o->errors, [];
     };
+};
+
+subtest 'has_error()' => sub {
+    plan tests => 2;
+
+    my $o = JIP::Guard::BaseErrorHandler->new;
+
+    is $o->has_error, 0;
+
+    $o->start->add(1);
+
+    is $o->has_error, 1;
 };
 

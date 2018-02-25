@@ -49,7 +49,7 @@ subtest 'new()' => sub {
 
     can_ok $o, qw(registry error_handler);
 
-    can_ok $o, qw(validate validated errors);
+    can_ok $o, qw(validate errors has_error);
 
     cmp_ok $o->registry, 'eq', 'tratata registry';
     is_deeply $o->errors, [];

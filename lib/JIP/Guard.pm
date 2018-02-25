@@ -14,7 +14,7 @@ our $VERSION = '0.01';
 
 has [qw(purge_unknown allow_unknown)] => (get => q{+}, set => q{+});
 
-has [qw(registry errors error_handler)] => (get => q{+}, set => q{-});
+has [qw(registry error_handler)] => (get => q{+}, set => q{-});
 
 sub new {
     my ($class, %param) = @ARG;
@@ -44,7 +44,6 @@ sub new {
 
     return bless({}, $class)
         ->_set_registry($param{'registry'})
-        ->_set_errors([])
         ->_set_error_handler($error_handler)
         ->set_purge_unknown($purge_unknown)
         ->set_allow_unknown($allow_unknown);
@@ -52,8 +51,6 @@ sub new {
 
 sub validate {
     my ($self, %param) = @ARG;
-
-    $self->_clear_errors;
 
     my $validation = JIP::Guard::Factory::Validation->create_for_request(
         %param,
@@ -63,35 +60,19 @@ sub validate {
 
     $validation->validate;
 
-    $self->_copy_errors;
+    return $validation->error_handler->has_error ? 0 : 1;
 }
 
-sub validated {
-    croak q{Method "validated" not implemented};
-}
-
-sub _clear_errors {
+sub errors {
     my $self = shift;
 
-    my $errors = $self->errors;
-
-    shift @{ $errors } while @{ $errors };
-
-    return $self;
+    return $self->error_handler->errors;
 }
 
-sub _copy_errors {
+sub has_error {
     my $self = shift;
 
-    $self->_clear_errors;
-
-    my $errors = $self->errors;
-
-    foreach my $error (@{ $self->error_handler->errors }) {
-        push @{ $errors }, $error;
-    }
-
-    return $self;
+    return $self->error_handler->has_error;
 }
 
 1;

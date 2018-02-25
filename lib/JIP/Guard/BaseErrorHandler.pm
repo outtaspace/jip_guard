@@ -30,14 +30,16 @@ sub add {
     return $self;
 }
 
-sub extend {
-    croak q{Method "extend" not implemented};
+sub has_error {
+    my $self = shift;
+
+    return @{ $self->errors } ? 1 : 0;
 }
 
 sub start {
     my $self = shift;
 
-    return $self->_set_active(1);
+    return $self->_set_errors([])->_set_active(1);
 }
 
 sub end {

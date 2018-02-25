@@ -23,20 +23,21 @@ my $guard = do {
 subtest 'validate first_name' => sub {
     plan tests => 3;
 
-    $guard->validate(value => undef,  schema => 'first_name');
-    $guard->validate(value => q{},    schema => 'first_name');
-    $guard->validate(value => 'John', schema => 'first_name');
+    subtest 'value is not defined' => sub {
+        plan tests => 10;
 
-    is scalar(@{ $guard->errors }), 2;
+        my $pass = $guard->validate(value => undef, schema => 'first_name');
 
-    subtest 'first error' => sub {
-        plan tests => 7;
+        is $pass,             0;
+        is $guard->has_error, 1;
+
+        is scalar(@{ $guard->errors }), 1;
 
         my $error = $guard->errors->[0];
 
         isa_ok $error, 'JIP::Guard::ValidationError';
 
-        is $error->schema, 'first_name';
+        is $error->schema,   'first_name';
         is $error->document, undef;
 
         my $definition = $error->definition;
@@ -48,14 +49,21 @@ subtest 'validate first_name' => sub {
         is $definition->method,           'check_for_defined';
     };
 
-    subtest 'second error' => sub {
-        plan tests => 7;
+    subtest 'value is empty string' => sub {
+        plan tests => 10;
 
-        my $error = $guard->errors->[1];
+        my $pass = $guard->validate(value => q{}, schema => 'first_name');
+
+        is $pass,             0;
+        is $guard->has_error, 1;
+
+        is scalar(@{ $guard->errors }), 1;
+
+        my $error = $guard->errors->[0];
 
         isa_ok $error, 'JIP::Guard::ValidationError';
 
-        is $error->schema, 'first_name';
+        is $error->schema,   'first_name';
         is $error->document, q{};
 
         my $definition = $error->definition;
@@ -65,26 +73,38 @@ subtest 'validate first_name' => sub {
         is $definition->constraint,       'empty';
         is $definition->constraint_value, 0;
         is $definition->method,           'check_for_empty';
+    };
+
+    subtest 'value is non empty string' => sub {
+        plan tests => 3;
+
+        my $pass = $guard->validate(value => 'John', schema => 'first_name');
+
+        is $pass,             1;
+        is $guard->has_error, 0;
+
+        is scalar(@{ $guard->errors }), 0;
     };
 };
 
 subtest 'validate last_name' => sub {
     plan tests => 3;
 
-    $guard->validate(value => undef, schema => 'last_name');
-    $guard->validate(value => q{},   schema => 'last_name');
-    $guard->validate(value => 'Doe', schema => 'last_name');
+    subtest 'value is not defined' => sub {
+        plan tests => 10;
 
-    is scalar(@{ $guard->errors }), 4;
+        my $pass = $guard->validate(value => undef, schema => 'last_name');
 
-    subtest 'third error' => sub {
-        plan tests => 7;
+        is $pass,             0;
+        is $guard->has_error, 1;
 
-        my $error = $guard->errors->[2];
+        is scalar(@{ $guard->errors }), 1;
+
+        my $error = $guard->errors->[0];
 
         isa_ok $error, 'JIP::Guard::ValidationError';
 
-        is $error->schema, 'last_name';
+        is $error->schema,   'last_name';
         is $error->document, undef;
 
         my $definition = $error->definition;
@@ -96,14 +116,21 @@ subtest 'validate last_name' => sub {
         is $definition->method,           'check_for_defined';
     };
 
-    subtest 'fourth error' => sub {
-        plan tests => 7;
+    subtest 'value is empty string' => sub {
+        plan tests => 10;
 
-        my $error = $guard->errors->[3];
+        my $pass = $guard->validate(value => q{}, schema => 'last_name');
+
+        is $pass,             0;
+        is $guard->has_error, 1;
+
+        is scalar(@{ $guard->errors }), 1;
+
+        my $error = $guard->errors->[0];
 
         isa_ok $error, 'JIP::Guard::ValidationError';
 
-        is $error->schema, 'last_name';
+        is $error->schema,   'last_name';
         is $error->document, q{};
 
         my $definition = $error->definition;
@@ -113,6 +140,17 @@ subtest 'validate last_name' => sub {
         is $definition->constraint,       'empty';
         is $definition->constraint_value, 0;
         is $definition->method,           'check_for_empty';
+    };
+
+    subtest 'value is non empty string' => sub {
+        plan tests => 3;
+
+        my $pass = $guard->validate(value => 'Doe', schema => 'last_name');
+
+        is $pass,             1;
+        is $guard->has_error, 0;
+
+        is scalar(@{ $guard->errors }), 0;
     };
 };
 
