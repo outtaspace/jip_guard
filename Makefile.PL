@@ -41,6 +41,7 @@ my %write_makefile_param = (
         'Carp'              => 0,
         'JIP::ClassField'   => '0.051',
         'Scalar::Util'      => 0,
+        'Data::Types'       => 0,
     },
     dist  => {COMPRESS => 'gzip -9f', SUFFIX => 'gz'},
     clean => {FILES => 'JIP-Guard-*'},

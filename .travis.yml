@@ -18,6 +18,7 @@ before_install:
     - "cpanm Test::Exception"
     - "cpanm Test::NoTabs"
     - "cpanm Mock::Quick"
+    - "cpanm Data::Types"
     - "cpanm JIP::ClassField@0.051"
 install:
     - "perl Makefile.PL && make test"
