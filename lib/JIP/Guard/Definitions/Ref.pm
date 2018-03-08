@@ -10,6 +10,7 @@ use constant TYPE => 'ref';
 use constant CONSTRAINTS => [qw(
     defined
     ref
+    reftype
 )];
 
 our $VERSION = '0.01';

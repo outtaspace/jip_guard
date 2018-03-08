@@ -47,11 +47,11 @@ subtest 'CONSTRAINTS' => sub {
     plan tests => 1;
 
     my $constraints = JIP::Guard::Definitions::Ref->CONSTRAINTS;
-    is_deeply $constraints, [qw(defined ref)];
+    is_deeply $constraints, [qw(defined ref reftype)];
 };
 
 subtest 'build_check_sequence()' => sub {
-    plan tests => 3;
+    plan tests => 4;
 
     subtest 'without any params' => sub {
         plan tests => 4;
@@ -98,6 +98,23 @@ subtest 'build_check_sequence()' => sub {
         is $checks[1]->constraint,       'ref';
         is $checks[1]->constraint_value, 1;
         is $checks[1]->method,           'check_for_ref';
+    };
+
+    subtest 'with reftype=ARRAY' => sub {
+        plan tests => 7;
+
+        my $o = JIP::Guard::Definitions::Ref->new(reftype => 'ARRAY');
+
+        my @checks = $o->build_check_sequence;
+        is scalar(@checks), 2;
+
+        is $checks[0]->constraint,       'ref';
+        is $checks[0]->constraint_value, 1;
+        is $checks[0]->method,           'check_for_ref';
+
+        is $checks[1]->constraint,       'reftype';
+        is $checks[1]->constraint_value, 'ARRAY';
+        is $checks[1]->method,           'check_for_reftype';
     };
 };
 
