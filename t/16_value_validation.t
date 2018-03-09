@@ -17,7 +17,7 @@ use JIP::Guard::Definitions::Integer;
 use JIP::Guard::Definitions::Float;
 use JIP::Guard::Definitions::Ref;
 
-plan tests => 7;
+plan tests => 8;
 
 my $guard = do {
     my $registry = build_registry();
@@ -491,6 +491,81 @@ subtest 'validate items' => sub {
         is $guard->has_error, 0;
 
         is scalar(@{ $guard->errors }), 0;
+    };
+};
+
+subtest 'throwable mode' => sub {
+    plan tests => 2;
+
+    $guard->set_throwable(1);
+
+    subtest 'throwable is requested' => sub {
+        plan tests => 10;
+
+        my ($line, $pass);
+        eval {
+            $line = __LINE__; $pass = $guard->validate(
+                value  => q{},
+                schema => 'items',
+            );
+        };
+
+        is $pass, undef;
+
+        if ($@) {
+            my $error_handler = $@;
+
+            isa_ok $error_handler, 'JIP::Guard::BaseErrorHandler';
+
+            ok $error_handler->has_error;
+
+            is scalar @{ $error_handler->errors },  1;
+
+            my $error = $error_handler->errors->[0];
+
+            isa_ok $error, 'JIP::Guard::ValidationError';
+
+            is $error->schema,   'items';
+            is $error->document, q{};
+
+            isa_ok $error->trace, 'Devel::StackTrace';
+
+            my $first_frame = $error->trace->frame(0);
+
+            is $first_frame->package, __PACKAGE__;
+            is $first_frame->line,    $line;
+        }
+    };
+
+    $guard->set_throwable(0);
+
+    subtest 'after throwable is disabled' => sub {
+        plan tests => 9;
+
+        my $line = __LINE__; my $pass = $guard->validate(
+            value  => q{},
+            schema => 'items',
+        );
+
+        is $pass, 0;
+
+        ok $guard->has_error;
+
+        is scalar @{ $guard->errors },  1;
+
+        my $error = $guard->errors->[0];
+
+        isa_ok $error, 'JIP::Guard::ValidationError';
+
+        is $error->schema,   'items';
+        is $error->document, q{};
+
+        isa_ok $error->trace, 'Devel::StackTrace';
+
+        my $first_frame = $error->trace->frame(0);
+
+        is $first_frame->package, __PACKAGE__;
+        is $first_frame->line,    $line;
     };
 };
 
