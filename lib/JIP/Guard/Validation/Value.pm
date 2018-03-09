@@ -5,6 +5,7 @@ use parent 'JIP::Guard::Validation';
 use strict;
 use warnings;
 
+use Carp qw(croak);
 use English qw(-no_match_vars);
 
 use JIP::Guard::Factory::Checks;
@@ -21,6 +22,9 @@ sub _check {
     my $self = shift;
 
     my $definitions = $self->registry->get($self->schema); # entry point
+
+    croak(sprintf 'No definitions found for "%s"', $self->schema)
+        unless $definitions;
 
     my $checks = $self->_create_checks_for($definitions);
 

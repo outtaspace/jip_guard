@@ -10,7 +10,7 @@ use Test::Exception;
 use English qw(-no_match_vars);
 use Mock::Quick qw(qtakeover qobj qmeth);
 
-plan tests => 5;
+plan tests => 6;
 
 subtest 'Require some module' => sub {
     plan tests => 2;
@@ -230,5 +230,27 @@ subtest '_check()' => sub {
 
     $o = $o->_check;
     isa_ok $o, 'JIP::Guard::Validation::Value';
+};
+
+subtest '_check() if schema is not exists' => sub {
+    plan tests => 2;
+
+    my $registry = qobj(
+        get => qmeth {
+            pass 'get() is invoked';
+            return undef;
+        },
+    );
+
+    my $o = JIP::Guard::Validation::Value->new(
+        document      => 'document is present',
+        schema        => 'tratata schema',
+        registry      => $registry,
+        error_handler => qobj(),
+    );
+
+    throws_ok { $o->_check; } qr{
+        No \s definitions \s found \s for \s "tratata \s schema"
+    }x;
 };
 

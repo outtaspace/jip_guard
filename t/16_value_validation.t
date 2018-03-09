@@ -6,6 +6,7 @@ use strict;
 use warnings FATAL => 'all';
 
 use Test::More;
+use Test::Exception;
 use English qw(-no_match_vars);
 
 use JIP::Guard;
@@ -17,7 +18,7 @@ use JIP::Guard::Definitions::Integer;
 use JIP::Guard::Definitions::Float;
 use JIP::Guard::Definitions::Ref;
 
-plan tests => 8;
+plan tests => 9;
 
 my $guard = do {
     my $registry = build_registry();
@@ -567,6 +568,14 @@ subtest 'throwable mode' => sub {
         is $first_frame->package, __PACKAGE__;
         is $first_frame->line,    $line;
     };
+};
+
+subtest 'validate() if schema is not exists' => sub {
+    plan tests => 1;
+
+    throws_ok { $guard->validate(value => q{}, schema => 'tratata'); } qr{
+        No \s definitions \s found \s for \s "tratata"
+    }x;
 };
 
 sub build_registry {
