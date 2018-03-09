@@ -8,11 +8,12 @@ use warnings FATAL => 'all';
 use Test::More;
 use Test::Exception;
 use English qw(-no_match_vars);
+use Mock::Quick qw(qobj qmeth);
 
 use constant PERLISH_TRUE  => !!1;
 use constant PERLISH_FALSE => !!0;
 
-plan tests => 6;
+plan tests => 8;
 
 subtest 'Require some module' => sub {
     plan tests => 2;
@@ -118,5 +119,37 @@ subtest 'new(error_handler)' => sub {
         error_handler => 'tratata error_handler',
     );
     is $o->error_handler, 'tratata error_handler';
+};
+
+subtest 'has_error()' => sub {
+    plan tests => 2;
+
+    my $error_handler = qobj(has_error => qmeth {
+        pass 'has_error is invoked';
+        return 42;
+    });
+
+    my $o = JIP::Guard->new(
+        registry      => 'tratata registry',
+        error_handler => $error_handler,
+    );
+
+    is $o->has_error, 42;
+};
+
+subtest 'errors()' => sub {
+    plan tests => 2;
+
+    my $error_handler = qobj(errors => qmeth {
+        pass 'errors is invoked';
+        return 42;
+    });
+
+    my $o = JIP::Guard->new(
+        registry      => 'tratata registry',
+        error_handler => $error_handler,
+    );
+
+    is $o->errors, 42;
 };
 
