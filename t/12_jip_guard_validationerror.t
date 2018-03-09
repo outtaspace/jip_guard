@@ -26,7 +26,7 @@ subtest 'Require some module' => sub {
 };
 
 subtest 'new()' => sub {
-    plan tests => 9;
+    plan tests => 12;
 
     throws_ok {
         JIP::Guard::ValidationError->new(
@@ -53,9 +53,9 @@ subtest 'new()' => sub {
     qr{Mandatory \s argument \s "document" \s is \s missing}x;
 
     my $o = JIP::Guard::ValidationError->new(
-            schema     => 'schema',
-            definition => 'definition',
-            document   => 'document',
+        schema     => 'schema',
+        definition => 'definition',
+        document   => 'document',
     );
     ok $o, 'got instance of JIP::Guard::ValidationError';
 
@@ -66,10 +66,23 @@ subtest 'new()' => sub {
         schema
         definition
         document
+        trace
+        set_trace
     );
 
     is $o->schema,     'schema';
     is $o->definition, 'definition';
     is $o->document,   'document';
+    is $o->trace,      undef;
+
+    is $o->set_trace(42)->trace, 42;
+
+    $o = JIP::Guard::ValidationError->new(
+        schema     => 'schema',
+        definition => 'definition',
+        document   => 'document',
+        trace      => 42,
+    );
+    is $o->trace, 42;
 };
 

@@ -11,6 +11,8 @@ our $VERSION = '0.01';
 
 has [qw(schema definition document)] => (get => q{+}, set => q{-});
 
+has 'trace' => (get => q{+}, set => q{+});
+
 sub new {
     my ($class, %param) = @ARG;
 
@@ -25,6 +27,7 @@ sub new {
         unless exists $param{'document'};
 
     return bless({}, $class)
+        ->set_trace($param{'trace'})
         ->_set_schema($param{'schema'})
         ->_set_definition($param{'definition'})
         ->_set_document($param{'document'});
