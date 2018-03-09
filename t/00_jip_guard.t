@@ -12,7 +12,7 @@ use English qw(-no_match_vars);
 use constant PERLISH_TRUE  => !!1;
 use constant PERLISH_FALSE => !!0;
 
-plan tests => 5;
+plan tests => 6;
 
 subtest 'Require some module' => sub {
     plan tests => 2;
@@ -29,7 +29,7 @@ subtest 'Require some module' => sub {
 };
 
 subtest 'new()' => sub {
-    plan tests => 11;
+    plan tests => 12;
 
     throws_ok { JIP::Guard->new; } qr{
         Mandatory \s argument \s "registry" \s is \s missing
@@ -45,6 +45,8 @@ subtest 'new()' => sub {
         set_purge_unknown
         allow_unknown
         set_allow_unknown
+        set_throwable
+        throwable
     );
 
     can_ok $o, qw(registry error_handler);
@@ -55,6 +57,7 @@ subtest 'new()' => sub {
     is_deeply $o->errors, [];
     cmp_ok $o->purge_unknown, '==', 0;
     cmp_ok $o->allow_unknown, '==', 1;
+    cmp_ok $o->throwable,     '==', 0;
     is ref($o->error_handler), 'JIP::Guard::BaseErrorHandler';
 };
 
@@ -89,6 +92,22 @@ subtest 'new(allow_unknown)' => sub {
         allow_unknown => PERLISH_FALSE,
     );
     cmp_ok $o->allow_unknown, '==', 0;
+};
+
+subtest 'new(throwable)' => sub {
+    plan tests => 2;
+
+    my $o = JIP::Guard->new(
+        registry  => 'tratata registry',
+        throwable => PERLISH_TRUE,
+    );
+    cmp_ok $o->throwable, '==', 1;
+
+    $o = JIP::Guard->new(
+        registry  => 'tratata registry',
+        throwable => PERLISH_FALSE,
+    );
+    cmp_ok $o->throwable, '==', 0;
 };
 
 subtest 'new(error_handler)' => sub {
