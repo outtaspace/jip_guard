@@ -14,7 +14,7 @@ our $VERSION = '0.01';
 sub validate {
     my $self = shift;
 
-    return $self->_set_up->_check->_tear_down
+    return $self->_set_up->_check->_tear_down;
 }
 
 sub _check {
