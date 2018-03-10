@@ -13,6 +13,7 @@ lib/JIP/Guard/Definitions.pm
 lib/JIP/Guard/Definitions/Boolean.pm
 lib/JIP/Guard/Definitions/Count.pm
 lib/JIP/Guard/Definitions/Float.pm
+lib/JIP/Guard/Definitions/HashElement.pm
 lib/JIP/Guard/Definitions/Integer.pm
 lib/JIP/Guard/Definitions/Ref.pm
 lib/JIP/Guard/Definitions/String.pm
@@ -52,4 +53,5 @@ t/21_jip_guard_definitions_count.t
 t/22_jip_guard_checks_count.t
 t/23_jip_guard_definitions_ref.t
 t/24_jip_guard_checks_ref.t
+t/25_jip_guard_definitions_hashelement.t
 t/99_notabs.t
