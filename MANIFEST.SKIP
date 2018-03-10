@@ -1,0 +1,12 @@
+# Version control files and dirs.
+\B\.git\b
+^\.gitignore$
+
+# CI
+^\.travis.yml$
+
+# Makemaker generated files and dirs.
+^MANIFEST\.
+^Makefile$
+^blib/
+^MakeMaker-\d
