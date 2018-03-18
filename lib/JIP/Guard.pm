@@ -8,8 +8,8 @@ use Devel::StackTrace;
 use Carp qw(croak);
 use English qw(-no_match_vars);
 
+use JIP::Guard::Validation;
 use JIP::Guard::BaseErrorHandler;
-use JIP::Guard::Factory::Validation;
 
 our $VERSION = '0.01';
 
@@ -59,24 +59,25 @@ sub new {
 sub validate {
     my ($self, %param) = @ARG;
 
-    my $validation = JIP::Guard::Factory::Validation->create_for_request(
-        %param,
+    my $validation = JIP::Guard::Validation->new(
+        document      => $param{'document'},
+        schema        => $param{'schema'},
         registry      => $self->registry,
         error_handler => $self->error_handler,
     );
 
     $validation->validate;
 
-    my $has_error = $validation->error_handler->has_error;
+    my $has_error = $self->has_error;
 
     if ($has_error) {
-        for my $each_error (@{ $validation->error_handler->errors }) {
+        for my $each_error (@{ $self->errors }) {
             $each_error->set_trace(Devel::StackTrace->new(skip_frames => 1));
         }
-    }
 
-    die $validation->error_handler
-        if $self->throwable;
+        die $validation->error_handler
+            if $self->throwable;
+    }
 
     return $has_error ? 0 : 1;
 }

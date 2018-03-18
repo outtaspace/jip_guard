@@ -32,7 +32,7 @@ subtest 'validate first_name' => sub {
     subtest 'value is not defined' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => undef, schema => 'first_name');
+        my $pass = $guard->validate(document => undef, schema => 'first_name');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -58,7 +58,7 @@ subtest 'validate first_name' => sub {
     subtest 'value is empty string' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => q{}, schema => 'first_name');
+        my $pass = $guard->validate(document => q{}, schema => 'first_name');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -84,7 +84,7 @@ subtest 'validate first_name' => sub {
     subtest 'value is non empty string' => sub {
         plan tests => 3;
 
-        my $pass = $guard->validate(value => 'John', schema => 'first_name');
+        my $pass = $guard->validate(document => 'John', schema => 'first_name');
 
         is $pass,             1;
         is $guard->has_error, 0;
@@ -99,7 +99,7 @@ subtest 'validate last_name' => sub {
     subtest 'value is not defined' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => undef, schema => 'last_name');
+        my $pass = $guard->validate(document => undef, schema => 'last_name');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -125,7 +125,7 @@ subtest 'validate last_name' => sub {
     subtest 'value is empty string' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => q{}, schema => 'last_name');
+        my $pass = $guard->validate(document => q{}, schema => 'last_name');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -151,7 +151,7 @@ subtest 'validate last_name' => sub {
     subtest 'value is non empty string' => sub {
         plan tests => 3;
 
-        my $pass = $guard->validate(value => 'Doe', schema => 'last_name');
+        my $pass = $guard->validate(document => 'Doe', schema => 'last_name');
 
         is $pass,             1;
         is $guard->has_error, 0;
@@ -166,7 +166,7 @@ subtest 'validate is_boolean' => sub {
     subtest 'value is not defined' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => undef, schema => 'is_boolean');
+        my $pass = $guard->validate(document => undef, schema => 'is_boolean');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -192,7 +192,7 @@ subtest 'validate is_boolean' => sub {
     subtest 'value is not boolean' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => 100500, schema => 'is_boolean');
+        my $pass = $guard->validate(document => 100500, schema => 'is_boolean');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -218,7 +218,7 @@ subtest 'validate is_boolean' => sub {
     subtest 'value is boolean' => sub {
         plan tests => 3;
 
-        my $pass = $guard->validate(value => 1, schema => 'is_boolean');
+        my $pass = $guard->validate(document => 1, schema => 'is_boolean');
 
         is $pass,             1;
         is $guard->has_error, 0;
@@ -233,7 +233,7 @@ subtest 'validate user_id' => sub {
     subtest 'value is not defined' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => undef, schema => 'user_id');
+        my $pass = $guard->validate(document => undef, schema => 'user_id');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -259,7 +259,7 @@ subtest 'validate user_id' => sub {
     subtest 'value is not a count' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => -100500, schema => 'user_id');
+        my $pass = $guard->validate(document => -100500, schema => 'user_id');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -285,7 +285,7 @@ subtest 'validate user_id' => sub {
     subtest 'value is a count' => sub {
         plan tests => 3;
 
-        my $pass = $guard->validate(value => 100500, schema => 'user_id');
+        my $pass = $guard->validate(document => 100500, schema => 'user_id');
 
         is $pass,             1;
         is $guard->has_error, 0;
@@ -300,7 +300,7 @@ subtest 'validate multiplier' => sub {
     subtest 'value is not defined' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => undef, schema => 'multiplier');
+        my $pass = $guard->validate(document => undef, schema => 'multiplier');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -326,7 +326,7 @@ subtest 'validate multiplier' => sub {
     subtest 'value is not integer' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => 100.5, schema => 'multiplier');
+        my $pass = $guard->validate(document => 100.5, schema => 'multiplier');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -352,7 +352,7 @@ subtest 'validate multiplier' => sub {
     subtest 'value is integer' => sub {
         plan tests => 3;
 
-        my $pass = $guard->validate(value => 100, schema => 'multiplier');
+        my $pass = $guard->validate(document => 100, schema => 'multiplier');
 
         is $pass,             1;
         is $guard->has_error, 0;
@@ -367,7 +367,7 @@ subtest 'validate amount' => sub {
     subtest 'value is not defined' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => undef, schema => 'amount');
+        my $pass = $guard->validate(document => undef, schema => 'amount');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -393,7 +393,7 @@ subtest 'validate amount' => sub {
     subtest 'value is not float' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => q{}, schema => 'amount');
+        my $pass = $guard->validate(document => q{}, schema => 'amount');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -419,7 +419,7 @@ subtest 'validate amount' => sub {
     subtest 'value is float' => sub {
         plan tests => 3;
 
-        my $pass = $guard->validate(value => 100.5, schema => 'amount');
+        my $pass = $guard->validate(document => 100.5, schema => 'amount');
 
         is $pass,             1;
         is $guard->has_error, 0;
@@ -434,7 +434,7 @@ subtest 'validate items' => sub {
     subtest 'value is not defined' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => undef, schema => 'items');
+        my $pass = $guard->validate(document => undef, schema => 'items');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -460,7 +460,7 @@ subtest 'validate items' => sub {
     subtest 'value is not a reference' => sub {
         plan tests => 10;
 
-        my $pass = $guard->validate(value => q{}, schema => 'items');
+        my $pass = $guard->validate(document => q{}, schema => 'items');
 
         is $pass,             0;
         is $guard->has_error, 1;
@@ -486,7 +486,7 @@ subtest 'validate items' => sub {
     subtest 'value is a reference' => sub {
         plan tests => 3;
 
-        my $pass = $guard->validate(value => [], schema => 'items');
+        my $pass = $guard->validate(document => [], schema => 'items');
 
         is $pass,             1;
         is $guard->has_error, 0;
@@ -506,8 +506,8 @@ subtest 'throwable mode' => sub {
         my ($line, $pass);
         eval {
             $line = __LINE__; $pass = $guard->validate(
-                value  => q{},
-                schema => 'items',
+                document => q{},
+                schema   => 'items',
             );
         };
 
@@ -544,8 +544,8 @@ subtest 'throwable mode' => sub {
         plan tests => 9;
 
         my $line = __LINE__; my $pass = $guard->validate(
-            value  => q{},
-            schema => 'items',
+            document => q{},
+            schema   => 'items',
         );
 
         is $pass, 0;
@@ -573,7 +573,7 @@ subtest 'throwable mode' => sub {
 subtest 'validate() if schema is not exists' => sub {
     plan tests => 1;
 
-    throws_ok { $guard->validate(value => q{}, schema => 'tratata'); } qr{
+    throws_ok { $guard->validate(document => q{}, schema => 'tratata'); } qr{
         No \s definitions \s found \s for \s "tratata"
     }x;
 };

@@ -10,7 +10,7 @@ use Test::Exception;
 use English qw(-no_match_vars);
 use Mock::Quick qw(qtakeover qobj qmeth);
 
-plan tests => 6;
+plan tests => 5;
 
 subtest 'Require some module' => sub {
     plan tests => 2;
@@ -24,18 +24,6 @@ subtest 'Require some module' => sub {
             $PERL_VERSION,
             $EXECUTABLE_NAME,
     );
-};
-
-subtest 'abstract methods' => sub {
-    plan tests => 2;
-
-    throws_ok { JIP::Guard::Validation->_check; } qr{
-        Method \s "_check" \s not \s implemented
-    }x;
-
-    throws_ok { JIP::Guard::Validation->validate; } qr{
-        Method \s "validate" \s not \s implemented
-    }x;
 };
 
 subtest 'new()' => sub {
