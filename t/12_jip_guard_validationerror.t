@@ -26,7 +26,7 @@ subtest 'Require some module' => sub {
 };
 
 subtest 'new()' => sub {
-    plan tests => 12;
+    plan tests => 14;
 
     throws_ok {
         JIP::Guard::ValidationError->new(
@@ -66,6 +66,7 @@ subtest 'new()' => sub {
         schema
         definition
         document
+        subtype
         trace
         set_trace
     );
@@ -74,15 +75,18 @@ subtest 'new()' => sub {
     is $o->definition, 'definition';
     is $o->document,   'document';
     is $o->trace,      undef;
+    is $o->subtype,    undef;
 
-    is $o->set_trace(42)->trace, 42;
+    is $o->set_trace('trace')->trace, 'trace';
 
     $o = JIP::Guard::ValidationError->new(
         schema     => 'schema',
         definition => 'definition',
         document   => 'document',
-        trace      => 42,
+        trace      => 'trace',
+        subtype    => 'subtype',
     );
-    is $o->trace, 42;
+    is $o->trace,   'trace';
+    is $o->subtype, 'subtype';
 };
 

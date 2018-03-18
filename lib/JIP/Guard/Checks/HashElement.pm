@@ -65,7 +65,10 @@ sub check_for_schema {
     $validation->validate;
 
     if ($error_handler->has_error) {
-        $self->record_error(definition => $definition);
+        $self->record_error(
+            definition => $definition,
+            subtype    => $error_handler->errors,
+        );
 
         return $self->NO_NEED_TO_CONTINUE;
     }

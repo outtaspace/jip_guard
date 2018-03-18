@@ -80,7 +80,7 @@ subtest 'validate first_name' => sub {
     };
 
     subtest 'element is not defined' => sub {
-        plan tests => 10;
+        plan tests => 3;
 
         my $pass = $guard->validate(
             document => {first_name => undef},
@@ -90,27 +90,57 @@ subtest 'validate first_name' => sub {
         is $pass,             0;
         is $guard->has_error, 1;
 
-        is scalar(@{ $guard->errors }), 1;
+        subtest 'errors' => sub {
+            plan tests => 9;
 
-        my $error = $guard->errors->[0];
+            is scalar(@{ $guard->errors }), 1;
 
-        isa_ok $error, 'JIP::Guard::ValidationError';
+            my $error = $guard->errors->[0];
 
-        is $error->schema, 'first_name';
+            isa_ok $error, 'JIP::Guard::ValidationError';
 
-        is_deeply $error->document, {first_name => undef};
+            is $error->schema, 'first_name';
 
-        my $definition = $error->definition;
+            is_deeply $error->document, {first_name => undef};
 
-        isa_ok $definition, 'JIP::Guard::Definition';
+            my $definition = $error->definition;
 
-        is $definition->constraint,       'schema';
-        is $definition->constraint_value, 'name';
-        is $definition->method,           'check_for_schema';
+            isa_ok $definition, 'JIP::Guard::Definition';
+
+            is $definition->constraint,       'schema';
+            is $definition->constraint_value, 'name';
+            is $definition->method,           'check_for_schema';
+
+            subtest 'subtype' => sub {
+                plan tests => 10;
+
+                my $subtype = $error->subtype;
+
+                is ref $subtype, 'ARRAY';
+
+                is scalar(@{ $subtype }), 1;
+
+                my $error = $subtype->[0];
+
+                isa_ok $error, 'JIP::Guard::ValidationError';
+
+                is $error->schema,   'name';
+                is $error->document, undef;
+                is $error->subtype,  undef;
+
+                my $definition = $error->definition;
+
+                isa_ok $definition, 'JIP::Guard::Definition';
+
+                is $definition->constraint,       'defined';
+                is $definition->constraint_value, 1;
+                is $definition->method,           'check_for_defined';
+            };
+        };
     };
 
     subtest 'element is empty string' => sub {
-        plan tests => 10;
+        plan tests => 3;
 
         my $pass = $guard->validate(
             document => {first_name => q{}},
@@ -120,23 +150,53 @@ subtest 'validate first_name' => sub {
         is $pass,             0;
         is $guard->has_error, 1;
 
-        is scalar(@{ $guard->errors }), 1;
+        subtest 'errors' => sub {
+            plan tests => 9;
 
-        my $error = $guard->errors->[0];
+            is scalar(@{ $guard->errors }), 1;
 
-        isa_ok $error, 'JIP::Guard::ValidationError';
+            my $error = $guard->errors->[0];
 
-        is $error->schema, 'first_name';
+            isa_ok $error, 'JIP::Guard::ValidationError';
 
-        is_deeply $error->document, {first_name => q{}};
+            is $error->schema, 'first_name';
 
-        my $definition = $error->definition;
+            is_deeply $error->document, {first_name => q{}};
 
-        isa_ok $definition, 'JIP::Guard::Definition';
+            my $definition = $error->definition;
 
-        is $definition->constraint,       'schema';
-        is $definition->constraint_value, 'name';
-        is $definition->method,           'check_for_schema';
+            isa_ok $definition, 'JIP::Guard::Definition';
+
+            is $definition->constraint,       'schema';
+            is $definition->constraint_value, 'name';
+            is $definition->method,           'check_for_schema';
+
+            subtest 'subtype' => sub {
+                plan tests => 10;
+
+                my $subtype = $error->subtype;
+
+                is ref $subtype, 'ARRAY';
+
+                is scalar(@{ $subtype }), 1;
+
+                my $error = $subtype->[0];
+
+                isa_ok $error, 'JIP::Guard::ValidationError';
+
+                is $error->schema,   'name';
+                is $error->document, q{};
+                is $error->subtype,  undef;
+
+                my $definition = $error->definition;
+
+                isa_ok $definition, 'JIP::Guard::Definition';
+
+                is $definition->constraint,       'empty';
+                is $definition->constraint_value, 0;
+                is $definition->method,           'check_for_empty';
+            };
+        };
     };
 
     subtest 'element is valid "name"' => sub {
